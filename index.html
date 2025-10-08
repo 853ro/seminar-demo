@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>葬祭業AIセミナー・デモ</title>
+
+
+    <!-- ★追加ここから -->
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-PQ3BNCVJ');</script>
+    <!-- End Google Tag Manager -->
+    <!-- 追加ここまで★ -->
+
+
+
+
+    <!-- GA4 gtag（測定IDを差し替え） -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXX'); // ← 測定ID
+
+        // URLのクエリに ?qr=xxx があれば、QRスキャンとしてイベント送信
+        const params = new URLSearchParams(location.search);
+        const qr = params.get('qr');
+        if (qr) {
+            gtag('event', 'qr_scan', { qr_source: qr });
+        }
+
+        // ボタンクリックのヘルパー
+        function sendEvent(name, params) {
+            gtag('event', name, params || {});
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: system-ui, -apple-system, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+            padding: 24px;
+            line-height: 1.7;
+        }
+
+        .wrap {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .note {
+            color: #555;
+            margin-bottom: 24px;
+        }
+
+        .btns a {
+            display: block;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 12px 0;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ★追加ここから -->
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PQ3BNCVJ" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <!-- 追加ここまで★ -->
+
+
+
+    <div class="wrap">
+        <h1>デモ：問い合わせ導線</h1>
+        <p class="note">このページのアクセスやクリックは GA4 リアルタイムに反映されます。</p>
+
+        <div class="btns">
+            <!-- 電話リンク：実機ではご自身の番号に差し替え推奨 -->
+            <a href="tel:0123456789" onclick="sendEvent('tel_click', {label: 'seminar_demo'})">
+                電話で相談する（デモ）
+            </a>
+
+            <!-- 問い合わせページ想定：同一ページ遷移でもOK -->
+            <a href="#contact" onclick="sendEvent('contact_click', {label: 'seminar_demo'})">
+                フォームで問い合わせ（デモ）
+            </a>
+
+            <!-- 資料ダウンロード想定：ダミーリンク -->
+            <a href="/brochure.pdf" onclick="sendEvent('brochure_download', {label: 'seminar_demo'})">
+                資料をダウンロード（デモ）
+            </a>
+        </div>
+
+        <hr>
+        <h2 id="contact">簡易フォーム（デモ）</h2>
+        <p>送信ボタン押下でイベント送信のみ行います。</p>
+        <form onsubmit="sendEvent('form_submit', {label: 'seminar_demo'}); alert('送信したテイで！'); return false;">
+            <p><input type="text" placeholder="お名前（不要）"
+                    style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;"></p>
+            <p><button type="submit" style="padding:10px 16px;border-radius:8px;">送信（デモ）</button></p>
+        </form>
+    </div>
+</body>
+
+</html>
