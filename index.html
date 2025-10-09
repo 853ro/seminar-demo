@@ -21,28 +21,27 @@
     <!-- 追加ここまで★ -->
 
 
-
-
-    <!-- GA4 gtag（測定IDを差し替え） -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
     <script>
+        // GTM用のイベント送信用ヘルパー（gtagではなく dataLayer に送る）
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXX'); // ← 測定ID
 
-        // URLのクエリに ?qr=xxx があれば、QRスキャンとしてイベント送信
-        const params = new URLSearchParams(location.search);
-        const qr = params.get('qr');
-        if (qr) {
-            gtag('event', 'qr_scan', { qr_source: qr });
-        }
+        // URLの ?qr=xxx を見て、あればカスタムイベントを送る
+        (function () {
+            const params = new URLSearchParams(location.search);
+            const qr = params.get('qr');
+            if (qr) {
+                window.dataLayer.push({ event: 'qr_scan', qr_source: qr });
+            }
+        })();
 
-        // ボタンクリックのヘルパー
+        // クリックなど任意イベント送信用
         function sendEvent(name, params) {
-            gtag('event', name, params || {});
+            params = params || {};
+            params.event = name;
+            window.dataLayer.push(params);
         }
     </script>
+
 
     <style>
         body {
@@ -89,7 +88,7 @@
 
 
     <div class="wrap">
-        <h1>デモ：問い合わせ導線</h1>
+        <h1>★デモ：問い合わせ導線</h1>
         <p class="note">このページのアクセスやクリックは GA4 リアルタイムに反映されます。</p>
 
         <div class="btns">
